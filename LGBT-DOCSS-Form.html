@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LGBT-DOCSS Self-Assessment</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #FBDEC9;
+      color: #434343;
+      margin: 2em;
+    }
+    h1, h2 {
+      text-align: center;
+      font-family: 'Volkhov', serif;
+      color: #FF6366;
+    }
+    .intro {
+      margin-bottom: 2em;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #questions {
+      max-width: 800px;
+      width: 100%;
+    }
+    .question {
+      margin-bottom: 2em;
+      text-align: center;
+    }
+    .question h3 {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      font-family: 'Volkhov', serif;
+    }
+    .scale {
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-top: 0.5em;
+    }
+    .scale label {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1em;
+      min-width: 100px;
+    }
+    .scale label span {
+      font-size: 1em;
+      margin: 0.2em 0;
+    }
+    button {
+      background-color: #FF6366;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1em;
+      padding: 0.6em 1.2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+    button:hover {
+      background-color: #e05558;
+    }
+    .results {
+      margin-top: 2em;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>LGBT-DOCSS Self-Assessment</h1>
+  <div class="intro">
+    <h2>The Lesbian, Gay, Bisexual, and Transgender Development of Clinical Skills Scale (LGBT-DOCSS)</h2>
+    <p><strong>Instructions:</strong> Items on this scale are intended to examine clinical preparedness, attitudes, and basic knowledge regarding lesbian, gay, bisexual, and transgender (LGBT) clients/patients. Please use the provided scale to rate your level of agreement or disagreement for each item.</p>
+    <p>Items on this scale primarily inquire about either sexual orientation (LGB = lesbian, gay, and bisexual) or gender identity (transgender). Two questions are inclusive and refer collectively to LGBT clients/patients.</p>
+    <p><strong>Scoring:</strong> After completing the scale, your results will include a total mean score and three subscale scores: Clinical Preparedness, Attitudes, and Knowledge. Higher scores indicate greater clinical competence and less prejudice.</p>
+    <p><strong>Reference:</strong><br>
+      Bidell, M. P. (2017). The Lesbian, Gay, Bisexual, and Transgender Development of Clinical Skills Scale (LGBT-DOCSS): Establishing a New Interdisciplinary Self-Assessment for Health Providers. <em>Journal of Homosexuality, 64</em>(10), 1432–1460. <a href="https://doi.org/10.1080/00918369.2017.1321389" target="_blank">https://doi.org/10.1080/00918369.2017.1321389</a>
+    </p>
+  </div>
+  <form id="docssForm">
+    <div id="questions"></div>
+    <button type="submit">Calculate Scores</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+      "I am aware of institutional barriers that may inhibit transgender people from using health care services.",
+      "I am aware of institutional barriers that may inhibit LGB people from using health services.",
+      "I think being transgender is a mental disorder.",
+      "I would feel unprepared talking with a LGBT client/patient about issues related to their sexual orientation or gender identity.",
+      "A same sex relationship between two men or two women is not as strong and committed as one between a man and a woman.",
+      "I am aware of research indicating that LGB individuals experience disproportionate levels of health and mental health problems compared to heterosexual individuals.",
+      "LGB individuals must be discreet about their sexual orientation around children.",
+      "I am aware of research indicating that transgender individuals experience disproportionate levels of health and mental health problems compared to cisgender individuals.",
+      "When it comes to transgender individuals, I believe they are morally deviant.",
+      "I have received adequate clinical training and supervision to work with transgender clients/patients.",
+      "I have received adequate clinical training and supervision to work with lesbian, gay, and bisexual (LGB) clients/patients.",
+      "The lifestyle of a LGB individual is unnatural or immoral.",
+      "I have experience working with LGB clients/patients.",
+      "I feel competent to assess a person who is LGB in a therapeutic setting.",
+      "I feel competent to assess a person who is transgender in a therapeutic setting.",
+      "I have experience working with transgender clients/patients.",
+      "People who dress opposite to their biological sex have a perversion.",
+      "I would be morally uncomfortable working with a LGBT client/patient."
+    ];
+
+    const reverseItems = [2, 3, 4, 6, 8, 11, 16, 17];
+    const subscales = {
+      preparedness: [3, 9, 10, 12, 13, 14, 15],
+      attitudes: [2, 4, 6, 8, 11, 16, 17],
+      knowledge: [0, 1, 5, 7]
+    };
+
+    const questionsDiv = document.getElementById("questions");
+    questions.forEach((q, idx) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>${idx + 1}. ${q}</h3>`;
+
+      const scaleDiv = document.createElement("div");
+      scaleDiv.className = "scale";
+
+      for (let i = 1; i <= 7; i++) {
+        const label = document.createElement("label");
+        let scaleText = "";
+        if (i === 1) scaleText = "Strongly Disagree";
+        if (i === 4) scaleText = "Somewhat Agree/Disagree";
+        if (i === 7) scaleText = "Strongly Agree";
+        label.innerHTML = `${scaleText}<input type="radio" name="q${idx}" value="${i}" required> ${i}`;
+        scaleDiv.appendChild(label);
+      }
+
+      div.appendChild(scaleDiv);
+      questionsDiv.appendChild(div);
+    });
+
+    document.getElementById("docssForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const form = event.target;
+      let scores = [];
+      for (let i = 0; i < questions.length; i++) {
+        let val = parseInt(form[`q${i}`].value);
+        if (reverseItems.includes(i)) val = 8 - val;
+        scores.push(val);
+      }
+      const total = scores.reduce((a, b) => a + b, 0) / scores.length;
+      const prep = subscales.preparedness.map(i => scores[i]).reduce((a, b) => a + b) / subscales.preparedness.length;
+      const att = subscales.attitudes.map(i => scores[i]).reduce((a, b) => a + b) / subscales.attitudes.length;
+      const know = subscales.knowledge.map(i => scores[i]).reduce((a, b) => a + b) / subscales.knowledge.length;
+
+      const resultsText = `Total Mean Score: ${total.toFixed(2)}\nClinical Preparedness Subscale: ${prep.toFixed(2)}\nAttitudes Subscale: ${att.toFixed(2)}\nKnowledge Subscale: ${know.toFixed(2)}`;
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = resultsText.replace(/\n/g, '<br>');
+      resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
