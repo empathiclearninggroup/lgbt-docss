@@ -4,18 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LGBT-DOCSS Self-Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Volkhov:wght@700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    h1, h2 { text-align: center; }
-    .intro { margin-bottom: 2em; max-width: 800px; margin-left: auto; margin-right: auto; }
-    form { display: flex; flex-direction: column; align-items: center; }
-    #questions { max-width: 800px; width: 100%; }
-    .question { margin-bottom: 2em; text-align: center; }
-    .question h3 { font-size: 1.2em; font-weight: bold; margin-bottom: 0.5em; }
-    .scale { display: flex; justify-content: center; gap: 1em; flex-wrap: nowrap; overflow-x: auto; margin-top: 0.5em; }
-    .scale label { text-align: center; display: flex; flex-direction: column; align-items: center; font-size: 0.9em; min-width: 100px; }
-    .results { margin-top: 2em; font-weight: bold; text-align: center; }
-    #downloadBtn { margin-top: 1em; display: none; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #FBDEC9;
+      color: #434343;
+      margin: 2em;
+    }
+    h1, h2 {
+      text-align: center;
+      font-family: 'Volkhov', serif;
+      color: #FF6366;
+    }
+    .intro {
+      margin-bottom: 2em;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #questions {
+      max-width: 800px;
+      width: 100%;
+    }
+    .question {
+      margin-bottom: 2em;
+      text-align: center;
+    }
+    .question h3 {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      font-family: 'Volkhov', serif;
+    }
+    .scale {
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-top: 0.5em;
+    }
+    .scale label {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1em;
+      min-width: 100px;
+    }
+    .scale label span {
+      font-size: 1em;
+      margin: 0.2em 0;
+    }
+    button {
+      background-color: #FF6366;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1em;
+      padding: 0.6em 1.2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+    button:hover {
+      background-color: #e05558;
+    }
+    .results {
+      margin-top: 2em;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -34,7 +99,6 @@
     <button type="submit">Calculate Scores</button>
   </form>
   <div class="results" id="results"></div>
-  <button id="downloadBtn">Download Results</button>
 
   <script>
     const questions = [
@@ -80,7 +144,7 @@
         if (i === 1) scaleText = "Strongly Disagree";
         if (i === 4) scaleText = "Somewhat Agree/Disagree";
         if (i === 7) scaleText = "Strongly Agree";
-        label.innerHTML = `${scaleText}<input type="radio" name="q${idx}" value="${i}" required> ${i}`;
+        label.innerHTML = `<span style="font-weight:bold">${i}</span><input type="radio" name="q${idx}" value="${i}" required><span>${scaleText}</span>`;
         scaleDiv.appendChild(label);
       }
 
@@ -107,16 +171,10 @@ Clinical Preparedness Subscale: ${prep.toFixed(2)}
 Attitudes Subscale: ${att.toFixed(2)}
 Knowledge Subscale: ${know.toFixed(2)}`;
 
-      document.getElementById("results").innerHTML = resultsText.replace(/\n/g, '<br>');
-      document.getElementById("downloadBtn").style.display = "inline-block";
-
-      document.getElementById("downloadBtn").onclick = function () {
-        const blob = new Blob([resultsText], { type: "text/plain" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "LGBT-DOCSS_Results.txt";
-        link.click();
-      };
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = resultsText.replace(/
+/g, '<br>');
+      resultsDiv.scrollIntoView({ behavior: 'smooth' });
     });
   </script>
 </body>
